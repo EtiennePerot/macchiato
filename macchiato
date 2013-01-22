@@ -39,7 +39,7 @@ fi
 for device in "${devices[@]}"; do
 	ouiList=()
 	ouiBlacklist=()
-	source "conf/$device.sh"
+	source "$confDir/$device.sh"
 
 	if [ -z "$ouiList" ]; then
 		echo "'ouiList' not specified in config file."
@@ -100,7 +100,20 @@ for device in "${devices[@]}"; do
 	
 	finalMACAddress=$(getGoodMACAddress)
 	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress'"
+	deviceIsUp=$(ip link show "$device" up)
+	if [ -n "$deviceIsUp" ]; then
+		echo "[$device] Bringing device down"
+		if ! ip link set "$device" down; then
+			echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
+		fi
+	fi
 	if ! macchanger -m "$finalMACAddress" "$device"; then
 		echo "[$device] WARNING: Failed to assign MAC address '$finalMACAddress'"
+	fi
+	if [ -n "$deviceIsUp" ]; then
+		echo "[$device] Bringing device back up"
+		if ! ip link set "$device" up; then
+			echo "[$device] Failed to bring device back up! Network connectivity will not work until it is back up."
+		fi
 	fi
 done
