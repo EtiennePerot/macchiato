@@ -1,4 +1,4 @@
 conf/*.sh
 src
 pkg
-macchiato-*.tar.xz
+macchiato-*.tar.*
