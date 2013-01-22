@@ -1,0 +1,10 @@
+[Unit]
+Description=MAC address spoofing
+Before=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/share/macchiato/macchiato /etc/macchiato.d
+
+[Install]
+WantedBy=network.target
