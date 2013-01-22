@@ -1,0 +1,21 @@
+# This is a sample config file.
+# A real config file would be named <someinterface>.sh.
+# All lines beginning with "#" are just comments of this config file.
+# You may remove them from the actual config files you write.
+
+# ouiList is a list of files from the oui/ directory that you wish to include
+# as possible OUI prefixes for the MAC addresses assigned to this interface.
+# addresses interface
+
+ouiList=(
+	wireless_laptop
+	wireless_usb
+)
+
+# ouiBlacklist is optional (you can completely leave it out).
+# If specified, it is a list of OUI prefixes that should never be used for
+# generating MAC addresses for this network interface.
+
+ouiBlacklist=(
+	00:26:bb # Apple, Inc.
+)

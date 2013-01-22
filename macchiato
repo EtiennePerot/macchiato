@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+scriptDir=$(dirname "$BASH_SOURCE")
+hexadecimalCharacters=(0 1 2 3 4 5 6 7 8 9 a b c d e f)
+
+if [ "$#" -eq 1 ]; then
+	confDir="$1"
+else
+	confDir="$scriptDir/conf"
+fi
+
+if [ ! -d "$confDir" ]; then
+	echo "Configuration directory '$confDir' does not exist."
+	exit 1
+fi
+
+confGlob=$(echo "$confDir"/*.sh)
+if [ "$confGlob" == "$confDir/*.sh" ]; then
+	echo "No configuration files found matching pattern '$confDir/*.sh'."
+	exit 1
+fi
+
+devices=()
+for i in "$confDir"/*.sh; do
+	deviceName=$(basename "$i" | sed 's/\.sh$//')
+	if macchanger "$deviceName" &> /dev/null; then
+		devices+=("$deviceName")
+	else
+		echo "Configuration file '$i' found, but network interface '$deviceName' does not exist."
+		exit 1
+	fi
+done
+
+if [ "${#devices[@]}" -eq 0 ]; then
+	echo 'Error: No device configuration found.'
+	exit 1
+fi
+
+for device in "${devices[@]}"; do
+	ouiList=()
+	ouiBlacklist=()
+	source "conf/$device.sh"
+
+	if [ -z "$ouiList" ]; then
+		echo "'ouiList' not specified in config file."
+		exit 1
+	fi
+
+	finalOuiList=()
+
+	addOuiList() {
+		local oui
+		if [ ! -f "$scriptDir/oui/$1.sh" ]; then
+			echo "OUI list not found in configuration: '$scriptDir/oui/$1.sh'"
+			exit 1
+		fi
+		source "$scriptDir/oui/$1.sh"
+		eval "currentList=(\"\${oui_$1[@]}\")"
+		for oui in "${currentList[@]}"; do
+			finalOuiList+=("$oui")
+		done
+	}
+
+	if declare -p ouiList | grep -q '^declare -a'; then
+		for subList in "${ouiList[@]}"; do
+			addOuiList "$subList"
+		done
+	else
+		addOuiList "$ouiList"
+	fi
+
+	numOuis="${#finalOuiList[@]}"
+
+	getGoodOui() {
+		local finalOui keepGoing blacklistedOui
+		finalOui=''
+		keepGoing='true'
+		while [ -n "$keepGoing" ]; do
+			keepGoing=''
+			finalOui="${finalOuiList[$[$RANDOM%$numOuis]]}"
+			if [ -n "$ouiBlacklist" ]; then
+				for blacklistedOui in "${ouiBlacklist[@]}"; do
+					if [ "$blacklistedOui" == "$finalOui" ]; then
+						keepGoing='true'
+						break
+					fi
+				done
+			fi
+		done
+		echo "$finalOui"
+	}
+
+	getRandomHex() {
+		echo "${hexadecimalCharacters[$[$RANDOM%16]]}"
+	}
+
+	getGoodMACAddress() {
+		echo "$(getGoodOui):$(getRandomHex)$(getRandomHex):$(getRandomHex)$(getRandomHex):$(getRandomHex)$(getRandomHex)"
+	}
+	
+	finalMACAddress=$(getGoodMACAddress)
+	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress'"
+	if ! macchanger -m "$finalMACAddress" "$device"; then
+		echo "[$device] WARNING: Failed to assign MAC address '$finalMACAddress'"
+	fi
+done
