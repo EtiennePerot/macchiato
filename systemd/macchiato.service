@@ -1,6 +1,6 @@
 [Unit]
 Description=MAC address spoofing
-Before=network.target
+Before=NetworkManager.service dhcpcd.service dhcpcd@.service netcfg.service netcfg@.service wicd.service
 
 [Service]
 Type=oneshot
