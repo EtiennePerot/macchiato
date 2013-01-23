@@ -1,3 +1,3 @@
 oui_wired_printer=(
-	00:21:5a # Hewlett-Packard Company
+	00:21:5a # Hewlett-Packard Company (HP PhotoSmart C7200 Series)
 )
