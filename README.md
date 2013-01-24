@@ -16,7 +16,7 @@ Trying to be smarter about it by restricting the subset of 3-byte sequences to r
 
 If you need reasons as to why spoofing your MAC address can be a good thing, [read this blog post on the subject][MAC spoofing: What, why, how, and something about coffee] or [the Wikipedia article about it][MAC spoofing].
 
-If you need reasons as to why you should use this over `macchanger`, you shouldn't. This script uses `macchanger` to do the actual MAC address assignment. The only thing you get out of it is control over the prefix of the MAC addresses assigned to each interface. This yields more believable spoofed MAC addresses. It also lets you define a blacklist of OUI prefixes you never want to see assigned to your network interface.
+If you need reasons as to why you should use this over manual configuration or `machchanger`, you shouldn't. This script uses `iproute2` to do the actual MAC address assignment. The only thing you get out of it is control over the prefix of the MAC addresses assigned to each interface. This yields more believable spoofed MAC addresses. It also lets you define a blacklist of OUI prefixes you never want to see assigned to your network interface.
 
 ## How
 
@@ -52,7 +52,7 @@ macchiato is licensed under the [3-clause BSD license]
 
 ## Credits
 
-* [`macchanger`][GNU macchanger] by [Alvaro Lopez Ortega]
+* [`iproute2`][iproute2]
 * Name idea by Esky
 * All the folks who helped gathering OUIs in the wild
 
@@ -62,5 +62,4 @@ macchiato is licensed under the [3-clause BSD license]
 [MAC spoofing]: https://en.wikipedia.org/wiki/MAC_spoofing
 [MAC spoofing: What, why, how, and something about coffee]: https://perot.me/mac-spoofing-what-why-how-and-something-about-coffee
 [3-clause BSD license]: http://opensource.org/licenses/BSD-3-Clause
-[GNU macchanger]: http://directory.fsf.org/wiki/GNU_MAC_Changer
-[Alvaro Lopez Ortega]: http://www.alobbs.com/macchanger
+[iproute2]: http://www.linuxfoundation.org/collaborate/workgroups/networking/iproute2
