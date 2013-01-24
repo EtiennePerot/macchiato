@@ -6,7 +6,7 @@ pkgdesc='MAC spoofing with a restricted range of OUI prefixes'
 arch=('i686' 'x86_64')
 url='https://github.com/EtiennePerot/macchiato'
 license=('BSD')
-depends=('bash' 'macchanger-debian')
+depends=('bash' 'iproute2')
 makedepends=('git')
 
 _gitroot='git://perot.me/macchiato'

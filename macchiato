@@ -23,7 +23,7 @@ fi
 devices=()
 for i in "$confDir"/*.sh; do
 	deviceName=$(basename "$i" | sed 's/\.sh$//')
-	if macchanger "$deviceName" &> /dev/null; then
+	if ip link show "$deviceName" &> /dev/null; then
 		devices+=("$deviceName")
 	else
 		echo "Configuration file '$i' found, but network interface '$deviceName' does not exist."
@@ -107,7 +107,7 @@ for device in "${devices[@]}"; do
 			echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
 		fi
 	fi
-	if ! macchanger -m "$finalMACAddress" "$device"; then
+	if ! ip link set "$device" address "$finalMACAddress"; then
 		echo "[$device] WARNING: Failed to assign MAC address '$finalMACAddress'"
 	fi
 	if [ -n "$deviceIsUp" ]; then
