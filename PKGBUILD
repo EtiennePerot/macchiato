@@ -39,5 +39,6 @@ package() {
 		install -D -m644 "$_oui" "${pkgdir}/usr/share/macchiato/$_oui"
 	done
 	install -D -m644 systemd/macchiato.service "${pkgdir}/usr/lib/systemd/system/macchiato.service"
+	install -D -m644 conf/sample.sh.example "${pkgdir}/usr/share/macchiato/conf/sample.sh.example"
 	install -D -m644 conf/sample.sh.example "${pkgdir}/etc/macchiato.d/sample.sh.example"
 }
