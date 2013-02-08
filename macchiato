@@ -1,16 +1,37 @@
 #!/usr/bin/env bash
 
+# macchiato
+# Usage:
+#     macchiato [confdir] [device1] [device2] ...
+#
+# 'confdir' is expected to contain a bunch of .sh files, named after each network interface.
+#     If not provided, will use '$(dirname "$BASH_SOURCE")/conf'
+# 'deviceN' is the name of a network interface on which to apply whatever the config file says.
+#     If not provided, will apply all configurations defined in 'confdir'
+
 scriptDir=$(dirname "$BASH_SOURCE")
 hexadecimalCharacters=(0 1 2 3 4 5 6 7 8 9 a b c d e f)
 
-if [ "$#" -eq 1 ]; then
-	confDir="$1"
-else
-	confDir="$scriptDir/conf"
-fi
+devices=()
+confDir="$scriptDir/conf"
+for arg; do
+	if [ -d "$arg" ]; then
+		confDir="$arg"
+	elif ip link show "$arg" &> /dev/null; then
+		devices+=("$arg")
+	else
+		echo "Don't know how to interpret argument: '$arg' - Neither a directory or a network interface."
+		exit 1
+	fi
+done
 
 if [ ! -d "$confDir" ]; then
 	echo "Configuration directory '$confDir' does not exist."
+	if [ "$#" -eq 0 ]; then # Probably first use; show something more helpful
+		echo 'Is this your first time using macchiato?'
+		echo 'You need to spend some time configuring it first.'
+		echo 'Read the readme file for help.'
+	fi
 	exit 1
 fi
 
@@ -20,20 +41,23 @@ if [ "$confGlob" == "$confDir/*.sh" ]; then
 	exit 1
 fi
 
-devices=()
-for i in "$confDir"/*.sh; do
-	deviceName=$(basename "$i" | sed 's/\.sh$//')
-	if ip link show "$deviceName" &> /dev/null; then
-		devices+=("$deviceName")
-	else
-		echo "Configuration file '$i' found, but network interface '$deviceName' does not exist."
-		exit 1
-	fi
-done
-
 if [ "${#devices[@]}" -eq 0 ]; then
-	echo 'Error: No device configuration found.'
-	exit 1
+	for i in "$confDir"/*.sh; do
+		deviceName=$(basename "$i" | sed 's/\.sh$//')
+		if ip link show "$deviceName" &> /dev/null; then
+			devices+=("$deviceName")
+		else
+			echo "Configuration file '$i' found, but network interface '$deviceName' does not exist."
+			exit 1
+		fi
+	done
+else
+	for device in "${devices[@]}"; do
+		if [ ! -f "$confDir/$device.sh" ]; then
+			echo "Interface '$device' found, but its configuration file ('$confDir/$device.sh') was not found."
+			exit 1
+		fi
+	done
 fi
 
 for device in "${devices[@]}"; do
@@ -99,7 +123,6 @@ for device in "${devices[@]}"; do
 	}
 	
 	finalMACAddress=$(getGoodMACAddress)
-	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress'"
 	deviceIsUp=$(ip link show "$device" up)
 	if [ -n "$deviceIsUp" ]; then
 		echo "[$device] Bringing device down"
@@ -107,8 +130,12 @@ for device in "${devices[@]}"; do
 			echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
 		fi
 	fi
+	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress'"
 	if ! ip link set "$device" address "$finalMACAddress"; then
 		echo "[$device] WARNING: Failed to assign MAC address '$finalMACAddress'"
+		if [ "$EUID" -ne 0 ]; then
+			echo 'It looks like you are not running this script as root. You may want to change that.'
+		fi
 	fi
 	if [ -n "$deviceIsUp" ]; then
 		echo "[$device] Bringing device back up"
