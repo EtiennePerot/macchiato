@@ -16,7 +16,7 @@ Trying to be smarter about it by restricting the subset of 3-byte sequences to r
 
 If you need reasons as to why spoofing your MAC address can be a good thing, [read this blog post on the subject][MAC spoofing: What, why, how, and something about coffee] or [the Wikipedia article about it][MAC spoofing].
 
-If you need reasons as to why you should use this over manual configuration or `machchanger`, you shouldn't. This script uses `iproute2` to do the actual MAC address assignment. The only thing you get out of it is control over the prefix of the MAC addresses assigned to each interface. This yields more believable spoofed MAC addresses. It also lets you define a blacklist of OUI prefixes you never want to see assigned to your network interface.
+If you need reasons as to why you should use this over manual configuration or `machchanger`, you shouldn't. This script uses the `ip` command to do the actual MAC address assignment. The only thing you get out of it is control over the prefix of the MAC addresses assigned to each interface. This yields more believable spoofed MAC addresses. It also lets you define a blacklist of OUI prefixes you never want to see assigned to your network interface.
 
 ## How
 
@@ -28,8 +28,7 @@ If you need reasons as to why you should use this over manual configuration or `
 
 #### The other way:
 
-	$ git clone git://perot.me/macchiato
-	$ sudo macchiato/install-systemd-service.sh
+	$ git clone git://perot.me/macchiato /usr/share/macchiato
 
 ### Configure it
 
@@ -38,13 +37,9 @@ If you need reasons as to why you should use this over manual configuration or `
 
 The `example.sh.sample` file you just copied should contain all the information you need.
 
-### Run it
+### Generate udev rules
 
-	$ sudo systemctl start macchiato
-
-### Like it? Add it to your boot process
-
-	$ sudo systemctl enable macchiato
+	$ sudo /usr/share/macchiato/install-udev-rules.sh
 
 ## License
 
