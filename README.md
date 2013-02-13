@@ -61,7 +61,6 @@ macchiato is licensed under the [3-clause BSD license]
 
 ## Credits
 
-* [`iproute2`][iproute2]
 * Name idea by Esky
 * All the folks who helped gathering OUIs in the wild
 
