@@ -78,8 +78,13 @@ for device in "${!deviceMap[@]}"; do
 	ouiBlacklist=()
 	source "${deviceMap[$device]}"
 
+	if [ "$dontTouch" == 'true' ]; then
+		echo "[$device] Skipping interface (dontTouch = true)."
+		continue
+	fi
+
 	if [ -z "$ouiList" ]; then
-		echo "'ouiList' not specified in config file."
+		echo "[$device] 'ouiList' not specified in config file: '${deviceMap[$device]}'."
 		exit 1
 	fi
 
@@ -88,7 +93,7 @@ for device in "${!deviceMap[@]}"; do
 	addOuiList() {
 		local oui
 		if [ ! -f "$scriptDir/oui/$1.sh" ]; then
-			echo "OUI list not found in configuration: '$scriptDir/oui/$1.sh'"
+			echo "[$device] OUI list '$1' not found in configuration: '$scriptDir/oui/$1.sh'"
 			exit 1
 		fi
 		source "$scriptDir/oui/$1.sh"

@@ -19,3 +19,9 @@ ouiList=(
 ouiBlacklist=(
 	00:26:bb # Apple, Inc.
 )
+
+# dontTouch should be set to true if you don't want macchiato to touch this
+# interface at all. This is useful in case your _default.sh file requests
+# the MAC address to be changed, but that there are certain interfaces for
+# which you odn't want the MAC address to be changed.
+dontTouch='false'
