@@ -1,6 +1,8 @@
 # macchiato
 
-*MAC Changer Hiding Identification And Transposing OUIs*
+<p align="center"><img src="https://github.com/EtiennePerot/macchiato/blob/master/icon.png?raw=true" alt="macchiato"/></p>
+
+*`macchiato`: MAC Changer Hiding Identification And Transposing OUIs*
 
 ## What
 
