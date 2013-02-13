@@ -1,8 +1,10 @@
-# macchiato
-
-<p align="center"><img src="https://github.com/EtiennePerot/macchiato/blob/master/icon.png?raw=true" alt="macchiato"/></p>
-
-<p align="center"> *`macchiato`: MAC Changer Hiding Identification And Transposing OUIs* </p>
+<div align="center">
+	<h1>macchiato</h1>
+	<p>
+		<img src="https://github.com/EtiennePerot/macchiato/blob/master/icon.png?raw=true" alt="macchiato"/><br/>
+		<span style="font-style: italic;"><code>macchiato</code>: MAC Changer Hiding Identification And Transposing OUIs</span>
+	</p>
+</div>
 
 ## What
 
