@@ -41,6 +41,20 @@ The `example.sh.sample` file you just copied should contain all the information 
 
 	$ sudo /usr/share/macchiato/install-udev-rules.sh
 
+### Run it manually
+
+#### Usage 1: Apply configuration to all network interfaces:
+
+	$ macchiato [confdir]
+
+For each file inside confdir (or inside `$scriptDir/conf` if not provided), it will apply that configuration to the interface it is meant for. If `confdir` contains a file named `_default.sh`, this configuration will be applied to all network interfaces which don't have a interface-specific configuration file. If there is no such file, then no configuration will be applied to network interfaces which don't have a interface-specific configuration file.
+
+#### Usage 2: Apply configuration to selected network interfaces:
+
+	$ macchiato [confdir] interface1 [interface2] [interface3] ...
+
+`macchiato` will check for interface-specific configuration for each of the provided interfaces inside `confdir`, or inside `$scriptDir/conf` if `confdir` is not provided. It will not affect any other interface.
+
 ## License
 
 macchiato is licensed under the [3-clause BSD license]
