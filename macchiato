@@ -11,7 +11,7 @@
 
 scriptDir=$(dirname "$BASH_SOURCE")
 
-source "$scriptDir/wrappers.sh"
+source "$scriptDir/functions.sh" || exit 1
 
 devices=()
 confDir="$scriptDir/conf"
