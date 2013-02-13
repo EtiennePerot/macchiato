@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
 
-# macchiato
-# Usage:
-#     macchiato [confdir] [device1] [device2] ...
-#
-# 'confdir' is expected to contain a bunch of .sh files, named after each network interface.
-#     If not provided, will use '$(dirname "$BASH_SOURCE")/conf'
-# 'deviceN' is the name of a network interface on which to apply whatever the config file says.
-#     If not provided, will apply all configurations defined in 'confdir'
-
 scriptDir=$(dirname "$BASH_SOURCE")
 
 source "$scriptDir/functions.sh" || exit 1
@@ -20,6 +11,13 @@ for arg; do
 		confDir="$arg"
 	elif deviceExists "$arg"; then
 		devices+=("$arg")
+	elif [ "$arg" == '-h' -o "$arg" == '--help' ]; then
+		echo 'Usage:'
+		echo '    macchiato [confdir] [[interface1] [interface2] ...]'
+		echo ''
+		echo 'macchiato is generally not meant to be called directly.'
+		echo 'Read the README file for complete usage information.'
+		exit 0
 	else
 		echo "Don't know how to interpret argument: '$arg' - Neither a directory or a network interface."
 		exit 1
@@ -31,7 +29,7 @@ if [ ! -d "$confDir" ]; then
 	if [ "$#" -eq 0 ]; then # Probably first use; show something more helpful
 		echo 'Is this your first time using macchiato?'
 		echo 'You need to spend some time configuring it first.'
-		echo 'Read the readme file for help.'
+		echo 'Read the README file for help.'
 	fi
 	exit 1
 fi
@@ -42,29 +40,43 @@ if [ "$confGlob" == "$confDir/*.sh" ]; then
 	exit 1
 fi
 
-if [ "${#devices[@]}" -eq 0 ]; then
-	for i in "$confDir"/*.sh; do
-		deviceName=$(basename "$i" | sed 's/\.sh$//')
-		if deviceExists "$deviceName"; then
-			devices+=("$deviceName")
-		else
-			echo "Configuration file '$i' found, but network interface '$deviceName' does not exist."
-			exit 1
-		fi
-	done
-else
-	for device in "${devices[@]}"; do
-		if [ ! -f "$confDir/$device.sh" ]; then
-			echo "Interface '$device' found, but its configuration file ('$confDir/$device.sh') was not found."
-			exit 1
-		fi
-	done
-fi
+declare -A deviceMap
 
 for device in "${devices[@]}"; do
+	if ! deviceExists "$device"; then
+		echo "Interface '$device' doesn't exist."
+		exit 1
+	else
+		if [ -f "$confDir/$device.sh" ]; then
+			deviceMap["$device"]="$confDir/$device.sh"
+		elif [ -f "$confDir/_default.sh.sh" ]; then
+			deviceMap["$device"]="$confDir/_default.sh"
+		else
+			echo "Interface '$device' found, but its configuration file ('$confDir/$device.sh') was not found."
+			echo "A default configuration file ('$confDir/_default.sh') was not found either."
+			exit 1
+		fi
+	fi
+done
+
+if [ "${#devices[@]}" -eq 0 ]; then # No devices specified on command line; apply to all devices
+	for device in $(getDevicesList); do
+		if [ -f "$confDir/$device.sh" ]; then
+			deviceMap["$device"]="$confDir/$device.sh"
+		elif [ -f "$confDir/_default.sh" ]; then
+			deviceMap["$device"]="$confDir/_default.sh"
+		fi
+	done
+	if [ "${#deviceMap[@]}" -eq 0 ]; then
+		echo 'Nothing to do; exitting.'
+		exit 0
+	fi
+fi
+
+for device in "${!deviceMap[@]}"; do
 	ouiList=()
 	ouiBlacklist=()
-	source "$confDir/$device.sh"
+	source "${deviceMap[$device]}"
 
 	if [ -z "$ouiList" ]; then
 		echo "'ouiList' not specified in config file."

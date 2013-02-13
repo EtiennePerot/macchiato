@@ -30,7 +30,7 @@ deviceExists() {
 		ip link show "$1" &> /dev/null
 		return "$?"
 	elif programExists ifconfig; then
-		ifconfig "$1" &> /dev/null
+		ifconfig -a "$1" &> /dev/null
 		return "$?"
 	fi
 	echo "Cannot determine whether network device '$1' exists or not; exitting."
@@ -86,4 +86,27 @@ deviceSetMAC() {
 	fi
 	echo "Cannot change the MAC address of network device '$1' to '$2'."
 	exit 1
+}
+
+getDevicesList() {
+	if programExists ip; then
+		ip -o link | sed -r 's/[0-9]+\s*:\s*(\S+):.*/\1/' | sort
+		return "$?"
+	elif programExists ifconfig; then
+		ifconfig -a -s | grep -v '^Iface' | cut -d ' ' -f 1 | sort
+		return "$?"
+	fi
+	echo "Cannot enumerate device list."
+	exit 1
+}
+
+isInArray() {
+	needle="$1"
+	shift
+	for haystack; do
+		if [ "$needle" == "$haystack" ]; then
+			return 0
+		fi
+	done
+	return 1
 }
