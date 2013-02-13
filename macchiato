@@ -10,14 +10,15 @@
 #     If not provided, will apply all configurations defined in 'confdir'
 
 scriptDir=$(dirname "$BASH_SOURCE")
-hexadecimalCharacters=(0 1 2 3 4 5 6 7 8 9 a b c d e f)
+
+source "$scriptDir/wrappers.sh"
 
 devices=()
 confDir="$scriptDir/conf"
 for arg; do
 	if [ -d "$arg" ]; then
 		confDir="$arg"
-	elif ip link show "$arg" &> /dev/null; then
+	elif deviceExists "$arg"; then
 		devices+=("$arg")
 	else
 		echo "Don't know how to interpret argument: '$arg' - Neither a directory or a network interface."
@@ -44,7 +45,7 @@ fi
 if [ "${#devices[@]}" -eq 0 ]; then
 	for i in "$confDir"/*.sh; do
 		deviceName=$(basename "$i" | sed 's/\.sh$//')
-		if ip link show "$deviceName" &> /dev/null; then
+		if deviceExists "$deviceName"; then
 			devices+=("$deviceName")
 		else
 			echo "Configuration file '$i' found, but network interface '$deviceName' does not exist."
@@ -93,15 +94,13 @@ for device in "${devices[@]}"; do
 		addOuiList "$ouiList"
 	fi
 
-	numOuis="${#finalOuiList[@]}"
-
 	getGoodOui() {
 		local finalOui keepGoing blacklistedOui
 		finalOui=''
 		keepGoing='true'
 		while [ -n "$keepGoing" ]; do
 			keepGoing=''
-			finalOui="${finalOuiList[$[$RANDOM%$numOuis]]}"
+			finalOui="$(getRandomChoice "${finalOuiList[@]}")"
 			if [ -n "$ouiBlacklist" ]; then
 				for blacklistedOui in "${ouiBlacklist[@]}"; do
 					if [ "$blacklistedOui" == "$finalOui" ]; then
@@ -114,32 +113,25 @@ for device in "${devices[@]}"; do
 		echo "$finalOui"
 	}
 
-	getRandomHex() {
-		echo "${hexadecimalCharacters[$[$RANDOM%16]]}"
-	}
-
-	getGoodMACAddress() {
-		echo "$(getGoodOui):$(getRandomHex)$(getRandomHex):$(getRandomHex)$(getRandomHex):$(getRandomHex)$(getRandomHex)"
-	}
-	
-	finalMACAddress=$(getGoodMACAddress)
-	deviceIsUp=$(ip link show "$device" up)
-	if [ -n "$deviceIsUp" ]; then
+	finalMACAddress="$(getGoodOui):$(getRandomMACEnding)"
+	deviceWasUp=''
+	if deviceIsUp "$device"; then
+		deviceWasUp='true'
 		echo "[$device] Bringing device down"
-		if ! ip link set "$device" down; then
+		if ! deviceBringDown "$device"; then
 			echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
 		fi
 	fi
 	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress'"
-	if ! ip link set "$device" address "$finalMACAddress"; then
+	if ! deviceSetMAC "$device" "$finalMACAddress"; then
 		echo "[$device] WARNING: Failed to assign MAC address '$finalMACAddress'"
 		if [ "$EUID" -ne 0 ]; then
 			echo 'It looks like you are not running this script as root. You may want to change that.'
 		fi
 	fi
-	if [ -n "$deviceIsUp" ]; then
+	if [ -n "$deviceWasUp" ]; then
 		echo "[$device] Bringing device back up"
-		if ! ip link set "$device" up; then
+		if ! deviceBringUp "$device"; then
 			echo "[$device] Failed to bring device back up! Network connectivity will not work until it is back up."
 		fi
 	fi
