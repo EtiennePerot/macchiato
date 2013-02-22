@@ -121,3 +121,19 @@ devHash() {
 		fi
 	done
 }
+
+ouiNormalizeBits() {
+	echo "$oui" | sed -r 's/^\s+|\s+$//g' | tr '[:upper:]' '[:lower:]' | sed 's/-/:/g'
+}
+
+ouiGetBits() {
+	echo "$1" | cut -d '=' -f 1
+}
+
+ouiGetOrganization() {
+	echo "$1" | cut -d '=' -f 2 | cut -d '|' -f 1
+}
+
+ouiGetDeviceName() {
+	echo "$1" | cut -d '=' -f 2 | cut -d '|' -f 2
+}

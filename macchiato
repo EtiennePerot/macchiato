@@ -156,7 +156,7 @@ for device in "${finalActions[@]}"; do
 	# in order to normalize them so that later on we can compare them directly
 	normalOuiBlacklist=()
 	for oui in "${ouiBlacklist[@]}"; do
-		normalOuiBlacklist+=("$(echo "$oui" | tr '[:upper:]' '[:lower:]' | sed 's/-/:/g')")
+		normalOuiBlacklist+=("$(ouiNormalizeBits "$oui")")
 	done
 
 	finalOuiList=()
@@ -182,13 +182,14 @@ for device in "${finalActions[@]}"; do
 	fi
 
 	getGoodOui() {
-		local finalOui keepGoing blacklistedOui
+		local finalOui finalOuiBits keepGoing blacklistedOui
 		finalOui=''
 		keepGoing='true'
 		while [ -n "$keepGoing" ]; do
 			keepGoing=''
 			finalOui="$(getRandomChoice "${finalOuiList[@]}")"
 			if [ "${#normalOuiBlacklist[@]}" -gt 0 ]; then
+				finalOuiBits="$(ouiGetBits "$finalOui")"
 				for blacklistedOui in "${normalOuiBlacklist[@]}"; do
 					if [ "$blacklistedOui" == "$finalOui" ]; then
 						keepGoing='true'
@@ -200,7 +201,8 @@ for device in "${finalActions[@]}"; do
 		echo "$finalOui"
 	}
 
-	finalMACAddress="$(getGoodOui):$(getRandomMACEnding)"
+	finalOui="$(getGoodOui)"
+	finalMACAddress="$(ouiGetBits "$finalOui"):$(getRandomMACEnding)"
 	deviceWasUp=''
 	if deviceIsUp "$device"; then
 		deviceWasUp='true'
@@ -209,7 +211,7 @@ for device in "${finalActions[@]}"; do
 			echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
 		fi
 	fi
-	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress'"
+	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress' ($(ouiGetOrganization "$finalOui") - $(ouiGetDeviceName "$finalOui"))"
 	if ! deviceSetMAC "$device" "$finalMACAddress"; then
 		echo "[$device] WARNING: Failed to assign MAC address '$finalMACAddress'"
 		if [ "$EUID" -ne 0 ]; then
