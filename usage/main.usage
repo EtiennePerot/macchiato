@@ -1,0 +1,7 @@
+Usage:
+    macchiato [confdir] [[interface1] [interface2] ...]
+    macchiato --manual <interface> [...]
+
+macchiato is generally not meant to be called directly.
+Read the README file for complete usage information.
+Use --manual-help for help on manual mode.

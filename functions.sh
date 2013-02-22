@@ -110,3 +110,14 @@ isInArray() {
 	done
 	return 1
 }
+
+devHash() {
+	# Try "poor" algorithms like md5 first because we don't want to make the variable names too long
+	# and the probability of collision is very low given an innocent user
+	for hashAlgorithm in md5sum sha1sum mdsum shasum cksum sum sha224sum sha256sum sha384sum sha512sum; do
+		if programExists "$hashAlgorithm"; then
+			echo -n "$1" | "$hashAlgorithm" | cut -d ' ' -f 1
+			break
+		fi
+	done
+}
