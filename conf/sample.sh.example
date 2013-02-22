@@ -20,6 +20,13 @@ ouiBlacklist=(
 	00:26:bb # Apple, Inc.
 )
 
+# ending is optional (you can completely leave it out).
+# If specified and not empty, it should contain the last 3 bytes of the MAC
+# address that you want to use for all generated MAC addresses for this
+# network interface. If not specified, those last 3 bytes will be chosen
+# randomly.
+ending=''
+
 # dontTouch should be set to true if you don't want macchiato to touch this
 # interface at all. This is useful in case your _default.sh file requests
 # the MAC address to be changed, but that there are certain interfaces for

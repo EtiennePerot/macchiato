@@ -122,8 +122,13 @@ devHash() {
 	done
 }
 
+ouiIsValidBits() {
+	echo "$1" | grep -q '^[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]$'
+	return "$?"
+}
+
 ouiNormalizeBits() {
-	echo "$oui" | sed -r 's/^\s+|\s+$//g' | tr '[:upper:]' '[:lower:]' | sed 's/-/:/g'
+	echo "$1" | sed -r 's/^\s+|\s+$//g' | tr '[:upper:]' '[:lower:]' | sed 's/-/:/g'
 }
 
 ouiGetBits() {

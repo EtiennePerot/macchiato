@@ -32,7 +32,9 @@ done
 # For every element $interface in finalActions, the following variables should be defined:
 # - finalActions_devHash($interface)_ouiList: Array of names of OUI classes
 # - finalActions_devHash($interface)_ouiBlacklist: Array of OUIs to not use
-# This construction is to work around the fact that Bash doesn't have associative arrays.
+# - finalActions_devHash($interface)_ending: Empty string or 3 bytes to use as ending
+# This construction is there to work around the fact that Bash doesn't have multi-dimensional
+# associative arrays.
 # The devHash() is there because interface names may contain dashes and other weird characters.
 # devHash is a function defined in functions.sh.
 finalActions=()
@@ -57,6 +59,7 @@ if [ -n "$manualMode" ]; then
 	shift
 	ouiList=()
 	ouiBlacklist=()
+	ending=''
 	while [ "$#" -gt 0 ]; do
 		if [ "$1" == '-o' -o "$1" == '--oui-class' ]; then
 			if [ "$#" -lt 2 ]; then
@@ -72,6 +75,19 @@ if [ -n "$manualMode" ]; then
 			fi
 			ouiBlacklist+=("$2")
 			shift
+		elif [ "$1" == '-e' -o "$1" == '--ending' ]; then
+			if [ -n "$ending" ]; then
+				echo "'-e|--ending' can only be specified once."
+				exit 1
+			elif [ "$#" -lt 2 ]; then
+				echo "Must specify the ending 3 bytes after '$1'."
+				exit 1
+			elif ! ouiIsValidBits "$2"; then
+				echo "Invalid MAC address ending: '$2'."
+				exit 1
+			fi
+			ending="$(ouiNormalizeBits "$2")"
+			shift
 		fi
 		shift
 	done
@@ -83,6 +99,7 @@ if [ -n "$manualMode" ]; then
 	finalActions+=("$manualDevice")
 	eval "finalActions_$(devHash "$manualDevice")_ouiList=(\"\${ouiList[@]}\")"
 	eval "finalActions_$(devHash "$manualDevice")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
+	eval "finalActions_$(devHash "$manualDevice")_ending=\"\$ending\""
 else
 	if [ ! -d "$confDir" ]; then
 		echo "Configuration directory '$confDir' does not exist."
@@ -132,25 +149,33 @@ else
 	for device in "${!deviceMap[@]}"; do
 		ouiList=()
 		ouiBlacklist=()
+		ending=''
 		source "${deviceMap[$device]}"
 		if [ "$dontTouch" == 'true' ]; then
 			echo "[$device] Skipping interface (dontTouch = true)."
 			continue
-		fi
-		if [ -z "$ouiList" ]; then
+		elif [ -z "$ouiList" ]; then
 			echo "[$device] 'ouiList' not specified in config file: '${deviceMap[$device]}'."
 			exit 1
+		elif [ -n "$ending" ]; then
+			if ! ouiIsValidBits "$ending"; then
+				echo "[$device] The provided ending ('$ending') is not a valid 3-byte sequence in config file: '${deviceMap[$device]}'."
+				exit 1
+			fi
 		fi
 		finalActions+=("$device")
 		manualDeviceHash=""
 		eval "finalActions_$(devHash "$device")_ouiList=(\"\${ouiList[@]}\")"
 		eval "finalActions_$(devHash "$device")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
+		eval "finalActions_$(devHash "$device")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
+		eval "finalActions_$(devHash "$device")_ending=\"\$ending\""
 	done
 fi
 
 for device in "${finalActions[@]}"; do
 	eval "ouiList=(\"\${finalActions_$(devHash "$device")_ouiList[@]}\")"
 	eval "ouiBlacklist=(\"\${finalActions_$(devHash "$device")_ouiBlacklist[@]}\")"
+	eval "ending=\"\$finalActions_$(devHash "$device")_ending\""
 
 	# Turn OUI blacklist to lowercase and to use :'s instead of -'s
 	# in order to normalize them so that later on we can compare them directly
@@ -202,7 +227,11 @@ for device in "${finalActions[@]}"; do
 	}
 
 	finalOui="$(getGoodOui)"
-	finalMACAddress="$(ouiGetBits "$finalOui"):$(getRandomMACEnding)"
+	if [ -z "$ending" ]; then
+		finalMACAddress="$(ouiGetBits "$finalOui"):$(getRandomMACEnding)"
+	else
+		finalMACAddress="$(ouiGetBits "$finalOui"):$ending"
+	fi
 	deviceWasUp=''
 	if deviceIsUp "$device"; then
 		deviceWasUp='true'

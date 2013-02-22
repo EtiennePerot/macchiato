@@ -61,12 +61,16 @@ For each file inside confdir (or inside `$scriptDir/conf` if not provided), it w
 
 #### Usage 3: Config-less usage
 
-	$ macchiato --manual <interface> -o <class1> [-o <class2> [...]] [-b <blacklisted1> [-b <blacklisted2> [...]]]
+	$ macchiato --manual <interface>
+	                     -o <class1> [-o <class2> [...]]
+	                     [-b <blacklisted1> [-b <blacklisted2> [...]]]
+	                     [-e <ending>]
 
 Manual mode allows you to run `macchiato` without having a config file. You must specify `--manual` as the first argument in order to use this. The next argument (`<interface>`) should be the name of the network interface to apply the rules to. Then, you can use the following:
 
 * `-o <class>` or `--oui-class <class>`: Specifies a class of OUI prefixes to use for this interface. For example, if you specify `--oui-class wired_console`, then the OUIs defined in `$scriptDir/oui/wired_console.sh` will be added to the list of OUIs to consider. You can specify this multiple times to add other possible OUI classes.
 * `-b <blaclistedOUI>` or `--blacklist <blaclistedOUI>`: Specifies single OUI that should never be used. You can specify this multiple times to blacklist multiple OUIs.
+* `-e <ending>` or `--ending <ending>`: Specifies the last 3 bytes to use for the generated MAC address (example: `dd:ee:ff`). If unspecified, these 3 bytes will be chosen randomly.
 
 
 ## License

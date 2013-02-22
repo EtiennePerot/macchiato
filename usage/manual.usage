@@ -2,6 +2,7 @@ Usage:
     macchiato --manual <interface>
               -o <class1> [-o <class2> [...]]
               [-b <blackedoui1> [-b <blackedoui2> [...]]
+              [-e <ending>]
 
 Arguments:
     <interface>
@@ -18,3 +19,7 @@ Arguments:
     -b|--blacklist <aa:bb:cc>
         Specifies single OUI that should never be used.
         You can specify this multiple times.
+
+    -e|--ending <dd:ee:ff>
+        Specifies the last 3 bytes to use for the generated MAC address.
+        If unspecified, these 3 bytes will be chosen randomly.
