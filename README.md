@@ -36,28 +36,38 @@ If you need reasons as to why you should use this over manual configuration or `
 
 ### Configure it
 
-	$ sudo cp /etc/macchiato.d/{example.sh.sample,wlan0.sh}
-	$ sudo $EDITOR /etc/macchiato.d/wlan0.sh
+	$ sudo cp /etc/macchiato.d/{example.sh.sample,<interface>.sh}
+	$ sudo $EDITOR /etc/macchiato.d/<interface>.sh
 
 The `example.sh.sample` file you just copied should contain all the information you need.
 
 ### Generate udev rules
 
-	$ sudo /usr/share/macchiato/install-udev-rules.sh
+	$ sudo /usr/share/macchiato/install-udev-rules.sh <confdir>
 
 ### Run it manually
 
 #### Usage 1: Apply configuration to all network interfaces:
 
-	$ macchiato [confdir]
+	$ macchiato [<confdir>]
 
 For each file inside confdir (or inside `$scriptDir/conf` if not provided), it will apply that configuration to the interface it is meant for. If `confdir` contains a file named `_default.sh`, this configuration will be applied to all network interfaces which don't have a interface-specific configuration file. If there is no such file, then no configuration will be applied to network interfaces which don't have a interface-specific configuration file.
 
 #### Usage 2: Apply configuration to selected network interfaces:
 
-	$ macchiato [confdir] interface1 [interface2] [interface3] ...
+	$ macchiato [<confdir>] <interface1> [<interface2> [...]] ...
 
 `macchiato` will check for interface-specific configuration for each of the provided interfaces inside `confdir`, or inside `$scriptDir/conf` if `confdir` is not provided. It will not affect any other interface.
+
+#### Usage 3: Config-less usage
+
+	$ macchiato --manual <interface> -o <class1> [-o <class2> [...]] [-b <blacklisted1> [-b <blacklisted2> [...]]]
+
+Manual mode allows you to run `macchiato` without having a config file. You must specify `--manual` as the first argument in order to use this. The next argument (`<interface>`) should be the name of the network interface to apply the rules to. Then, you can use the following:
+
+* `-o <class>` or `--oui-class <class>`: Specifies a class of OUI prefixes to use for this interface. For example, if you specify `--oui-class wired_console`, then the OUIs defined in `$scriptDir/oui/wired_console.sh` will be added to the list of OUIs to consider. You can specify this multiple times to add other possible OUI classes.
+* `-b <blaclistedOUI>` or `--blacklist <blaclistedOUI>`: Specifies single OUI that should never be used. You can specify this multiple times to blacklist multiple OUIs.
+
 
 ## License
 

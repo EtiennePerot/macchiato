@@ -1,5 +1,5 @@
 Usage:
-    macchiato [confdir] [[interface1] [interface2] ...]
+    macchiato [<confdir>] [<interface1> [<interface2> [...]]]
     macchiato --manual <interface> [...]
 
 macchiato is generally not meant to be called directly.
