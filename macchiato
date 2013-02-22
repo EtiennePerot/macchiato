@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-scriptDir=$(dirname "$BASH_SOURCE")
+scriptFile="$(readlink "$BASH_SOURCE")"
+scriptDir="$(dirname "$scriptFile")"
 
 source "$scriptDir/functions.sh" || exit 1
 
