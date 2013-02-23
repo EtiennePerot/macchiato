@@ -72,10 +72,11 @@ Manual mode allows you to run `macchiato` without having a config file. You must
 * `-b <blaclistedOUI>` or `--blacklist <blaclistedOUI>`: Specifies single OUI that should never be used. You can specify this multiple times to blacklist multiple OUIs.
 * `-e <ending>` or `--ending <ending>`: Specifies the last 3 bytes to use for the generated MAC address (example: `dd:ee:ff`). If unspecified, these 3 bytes will be chosen randomly.
 
-
 ## License
 
-macchiato is licensed under the [3-clause BSD license]
+`macchiato`'s source code and OUI lists are licensed under the [3-clause BSD license].
+
+The logo above is part of the [Oxygen Icons project] and is licensed under the [Creative Common Attribution-ShareAlike 3.0 License]. It is *not included* as part of a `macchiato` installation. As such, packagers should exclude this file from redistributable packages, and use the license file `LICENSE.redistrib`.
 
 ## Credits
 
@@ -88,4 +89,5 @@ macchiato is licensed under the [3-clause BSD license]
 [MAC spoofing]: https://en.wikipedia.org/wiki/MAC_spoofing
 [MAC spoofing: What, why, how, and something about coffee]: https://perot.me/mac-spoofing-what-why-how-and-something-about-coffee
 [3-clause BSD license]: http://opensource.org/licenses/BSD-3-Clause
-[iproute2]: http://www.linuxfoundation.org/collaborate/workgroups/networking/iproute2
+[Oxygen Icons project]: http://www.oxygen-icons.org/
+[Creative Common Attribution-ShareAlike 3.0 License]: https://creativecommons.org/licenses/by-sa/3.0/
