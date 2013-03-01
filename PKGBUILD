@@ -1,7 +1,7 @@
 # Maintainer: Etienne Perot <etienne@perot.me>
 pkgname=macchiato-git
 pkgver=20130221
-pkgrel=2
+pkgrel=3
 pkgdesc='MAC spoofing with a restricted range of OUI prefixes'
 arch=('any')
 url='https://github.com/EtiennePerot/macchiato'
@@ -32,7 +32,7 @@ build() {
 
 package() {
 	cd "$srcdir/$_gitname-build"
-	install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.redistrib"
+	install -D -m644 LICENSE.redistrib "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 	install -D -m755 macchiato "${pkgdir}/usr/share/macchiato/macchiato"
 	install -D -m755 functions.sh "${pkgdir}/usr/share/macchiato/functions.sh"
 	install -D -m755 install-udev-rules.sh "${pkgdir}/usr/share/macchiato/install-udev-rules.sh"
