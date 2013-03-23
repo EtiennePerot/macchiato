@@ -4,5 +4,6 @@ oui_wireless_laptop=(
 	00:21:00='GemTek Technology Co., Ltd.|HP Pavilion TX2510EA'
 	00:26:82='Gemtek Technology Co., Ltd.|HP Laptop'
 	00:26:bb='Apple, Inc.|MacBook Pro 5.1'
-	64:27:37='Hon Hai Precision Ind. Co., Ltd./ Foxconn|Dell Vostro 2520 BTX'
+	64:27:37='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Dell Vostro 2520 BTX'
+	84:4b:f5='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Sony VAIO SVT1311W1E/S'
 )
