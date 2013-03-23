@@ -6,4 +6,5 @@ oui_wireless_laptop=(
 	00:26:bb='Apple, Inc.|MacBook Pro 5.1'
 	64:27:37='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Dell Vostro 2520 BTX'
 	84:4b:f5='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Sony VAIO SVT1311W1E/S'
+	94:db:c9='Azurewave|Asus K53E Notebook, Atheros Communications Inc. AR9485 Wireless Network Adapter (rev 01)'
 )
