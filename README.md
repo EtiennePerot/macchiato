@@ -24,6 +24,8 @@ If you need reasons as to why you should use this over manual configuration or `
 
 ## How
 
+*Note*: Throughout this document, items written in `<angle brackets>` are meant to be replaced by the user, and items in `[square brackets]` are optional.
+
 ### Install it
 
 ##### The Arch way:
@@ -80,7 +82,7 @@ For each file inside confdir (or inside `$scriptDir/conf` if not provided), it w
 
 ##### Usage 2: Apply configuration to selected network interfaces:
 
-	$ macchiato [<confdir>] <interface1> [<interface2> [...]] ...
+	$ macchiato [<confdir>] <interface1> [<interface2> [...]]
 
 `macchiato` will check for interface-specific configuration for each of the provided interfaces inside `confdir`, or inside `$scriptDir/conf` if `confdir` is not provided. It will not affect any other interface.
 
