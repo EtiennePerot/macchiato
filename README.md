@@ -44,10 +44,10 @@ And you probably want to create a directory to stash your configuration into:
 
 ### Configure it
 
-	$ sudo cp /etc/macchiato.d/{example.sh.sample,<interface>.sh}
+	$ sudo cp /usr/share/macchiato/conf/sample.sh.example /etc/macchiato.d/<interface>.sh
 	$ sudo $EDITOR /etc/macchiato.d/<interface>.sh
 
-The `example.sh.sample` file you just copied should contain all the information you need.
+The `example.sh.sample` file you just copied should contain all the information you need as comments.
 
 ### Generate udev rules
 
