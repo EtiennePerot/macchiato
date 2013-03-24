@@ -9,7 +9,8 @@ oui_wireless_mobile=(
 	4c:0b:3a='TCT Mobile Limited|Alcatel One Touch 903'
 	78:d6:f0='Samsung Electro Mechanics|Nexus S'
 	bc:20:a4='Samsung Electronics|Samsung Galaxy Note'
-	e8:06:88='Apple, Inc.|iPhone 3GS old bootrom'
+	d8:d1:cb='Apple|Apple iPhone 5'
+	e8:06:88='Apple, Inc.|Apple iPhone 3GS old bootrom'
 	e8:92:a4='LG Electronics|Nexus 4'
-	f8:1e:df='Apple, Inc.|iPhone 3GS new bootrom'
+	f8:1e:df='Apple, Inc.|Apple iPhone 3GS new bootrom'
 )
