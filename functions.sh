@@ -5,7 +5,11 @@ programExists() {
 
 getRandom() {
 	if programExists xxd; then
-		printf '%d' "0x$(cat /dev/urandom | xxd -p -l 2)"
+		if [ -n "$useRandom" ]; then
+			printf '%d' "0x$(head -c 2 /dev/random | xxd -p -l 2)"
+		else
+			printf '%d' "0x$(head -c 2 /dev/urandom | xxd -p -l 2)"
+		fi
 	else
 		echo "$RANDOM"
 	fi

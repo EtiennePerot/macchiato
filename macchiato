@@ -33,8 +33,8 @@ done
 # - finalActions_devHash($interface)_ouiList: Array of names of OUI classes
 # - finalActions_devHash($interface)_ouiBlacklist: Array of OUIs to not use
 # - finalActions_devHash($interface)_ending: Empty string or 3 bytes to use as ending
-# This construction is there to work around the fact that Bash doesn't have multi-dimensional
-# associative arrays.
+# - finalActions_devHash($interface)_useRandom: Empty string to use /dev/urandom, non-empty string to use /dev/random
+# This construction is there to work around the fact that Bash doesn't have multi-dimensional associative arrays.
 # The devHash() is there because interface names may contain dashes and other weird characters.
 # devHash is a function defined in functions.sh.
 finalActions=()
@@ -60,6 +60,7 @@ if [ -n "$manualMode" ]; then
 	ouiList=()
 	ouiBlacklist=()
 	ending=''
+	useRandom=''
 	while [ "$#" -gt 0 ]; do
 		if [ "$1" == '-o' -o "$1" == '--oui-class' ]; then
 			if [ "$#" -lt 2 ]; then
@@ -88,6 +89,12 @@ if [ -n "$manualMode" ]; then
 			fi
 			ending="$(ouiNormalizeBits "$2")"
 			shift
+		elif [ "$1" == '-r' -o "$1" == '--use-random' ]; then
+			if ! programExists xxd; then
+				echo "Cannot use /dev/random without having 'xxd' installed. Please install 'xxd' or use /dev/urandom."
+				exit 1
+			fi
+			useRandom='true'
 		fi
 		shift
 	done
@@ -100,6 +107,7 @@ if [ -n "$manualMode" ]; then
 	eval "finalActions_$(devHash "$manualDevice")_ouiList=(\"\${ouiList[@]}\")"
 	eval "finalActions_$(devHash "$manualDevice")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
 	eval "finalActions_$(devHash "$manualDevice")_ending=\"\$ending\""
+	eval "finalActions_$(devHash "$manualDevice")_useRandom=\"\$useRandom\""
 else
 	if [ ! -d "$confDir" ]; then
 		echo "Configuration directory '$confDir' does not exist."
@@ -150,6 +158,7 @@ else
 		ouiList=()
 		ouiBlacklist=()
 		ending=''
+		useRandom=''
 		source "${deviceMap[$device]}"
 		if [ "$dontTouch" == 'true' ]; then
 			echo "[$device] Skipping interface (dontTouch = true)."
@@ -162,6 +171,11 @@ else
 				echo "[$device] The provided ending ('$ending') is not a valid 3-byte sequence in config file: '${deviceMap[$device]}'."
 				exit 1
 			fi
+		elif [ -n "$useRandom" ]; then
+			if ! programExists xxd; then
+				echo "[$device] Cannot use /dev/random without having 'xxd' installed. Please install 'xxd' or use /dev/urandom."
+				exit 1
+			fi
 		fi
 		finalActions+=("$device")
 		manualDeviceHash=""
@@ -169,6 +183,7 @@ else
 		eval "finalActions_$(devHash "$device")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
 		eval "finalActions_$(devHash "$device")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
 		eval "finalActions_$(devHash "$device")_ending=\"\$ending\""
+		eval "finalActions_$(devHash "$device")_useRandom=\"\$useRandom\""
 	done
 fi
 
@@ -176,6 +191,7 @@ for device in "${finalActions[@]}"; do
 	eval "ouiList=(\"\${finalActions_$(devHash "$device")_ouiList[@]}\")"
 	eval "ouiBlacklist=(\"\${finalActions_$(devHash "$device")_ouiBlacklist[@]}\")"
 	eval "ending=\"\$finalActions_$(devHash "$device")_ending\""
+	eval "useRandom=\"\$finalActions_$(devHash "$device")_useRandom\""
 
 	# Turn OUI blacklist to lowercase and to use :'s instead of -'s
 	# in order to normalize them so that later on we can compare them directly

@@ -27,6 +27,13 @@ ouiBlacklist=(
 # randomly.
 ending=''
 
+# useRandom is optional (you can completely leave it out).
+# If specified and not empty, macchiato will use /dev/random instead of
+# /dev/urandom as a source of randomness. On Linux systems, this may block for
+# some time until enough entropy is available, but provides higher-quality
+# randomness used when generating a MAC address.
+useRandom=''
+
 # dontTouch should be set to true if you don't want macchiato to touch this
 # interface at all. This is useful in case your _default.sh file requests
 # the MAC address to be changed, but that there are certain interfaces for
