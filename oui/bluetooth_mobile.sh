@@ -1,5 +1,6 @@
 # Bluetooth interfaces in mobile phones
 oui_bluetooth_mobile=(
+	00:1e:7d='Samsung Electronics Co.,Ltd|Samsung Ace SPH-i325 Windows Mobile Phone'
 	08:d4:2b='Samsung Electronics|Samsung Galaxy S3'
 	0c:71:5d='Samsung Electronics|Samsung Galaxy S3'
 	2c:44:01='Samsung Electronics Co.,Ltd|Samsung Galaxy Note'

@@ -4,6 +4,7 @@ oui_wireless_mobile=(
 	00:26:ff='Research In Motion|BlackBerry Curve 8520'
 	20:64:32='Samsung Electro Mechanics Co.,ltd.|Galaxy S2'
 	34:bb:1f='Research In Motion|BlackBerry Curve 9320'
+	38:aa:3c='SAMSUNG ELECTRO-MECHANICS|Samsung Galaxy Note 2'
 	3c:74:37='RIM|Blackberry'
 	40:6a:ab='RIM|BlackBerry Curve 8520'
 	4c:0b:3a='TCT Mobile Limited|Alcatel One Touch 903'
