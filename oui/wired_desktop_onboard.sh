@@ -6,6 +6,7 @@ oui_wired_desktop_onboard=(
 	00:1e:8c='Asustek Computer Inc|CROSSHAIR motherboard'
 	00:25:22='Asrock Incorporation|Asrock Z68 Extreme4'
 	50:e5:49='Giga-byte Technology Co.,ltd.|GIGABYTE GA-Z68X-UD3-B3'
+	70:71:bc='PEGATRON CORPORATION|Intel DH55TC motherboard'
 	bc:5f:f4='ASRock Incorporation|ASRock Z77 Extreme3'
 	bc:ae:c5='ASUSTek COMPUTER INC.|ASUS P8P67 Pro motherboard'
 	c4:2c:03='Apple, Inc.|Apple iMac 11,3 (27", 2010)'
