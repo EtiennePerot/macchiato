@@ -13,6 +13,9 @@ oui_wireless_laptop=(
 	60:d8:19='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Lenovo ThinkPad X121e, Realtek RTL8188CE Wireless Network Adapter'
 	64:27:37='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Dell Vostro 2520 BTX'
 	70:f3:95='Universal Global Scientific Industrial Co., Ltd.|HP 425 Notebook'
+	78:e4:00='Hon Hai Precision Ind. Co.,Ltd.|Acer Aspire One D260'
 	84:4b:f5='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Sony VAIO SVT1311W1E/S'
 	94:db:c9='Azurewave|Asus K53E Notebook, Atheros Communications Inc. AR9485 Wireless Network Adapter (rev 01)'
+	b8:8d:12='Apple, Inc.|MacBook Pro 8.1 (13", 2011)'
+	cc:af:78='Hon Hai Precision Ind. Co.,Ltd.|Acer Aspire One D257'
 )
