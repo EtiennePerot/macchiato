@@ -11,6 +11,7 @@ oui_wired_laptop=(
 	10:bf:48='ASUSTEK COMPUTER INC.|Asus K45VM Notebook, Realtek PCIe GBE Family Controller'
 	30:f9:ed='Sony Corporation|Sony VAIO SVT1311W1E/S'
 	3c:07:54='Apple, Inc.|MacBook Pro 8.1 (13", 2011)'
+	8c:73:6e='Fujitsu Limited|Fujitsu Lifebook E780'
 	c8:60:00='ASUSTek COMPUTER INC.|Asus K53E Notebook, Atheros Communications Inc. AR8151 v2.0 Gigabit Ethernet (rev c0)'
 	e0:db:55='Dell Inc.|Dell Vostro 2520 BTX'
 	e8:9a:8f='Quanta Computer Inc.|Acer Aspire One D257'

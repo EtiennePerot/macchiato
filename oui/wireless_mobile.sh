@@ -2,6 +2,7 @@
 oui_wireless_mobile=(
 	00:23:76='HTC Corporation|HTC HD2'
 	00:26:ff='Research In Motion|BlackBerry Curve 8520'
+	1c:b0:94='HTC Corporation|HTC One S'
 	20:64:32='Samsung Electro Mechanics Co.,ltd.|Galaxy S2'
 	34:bb:1f='Research In Motion|BlackBerry Curve 9320'
 	38:aa:3c='SAMSUNG ELECTRO-MECHANICS|Samsung Galaxy Note 2'
