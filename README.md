@@ -36,7 +36,7 @@ There is a [macchiato-git package] available in the [Arch User Repository]:
 
 ##### The other way:
 
-Check out the repository whever you wish to install the program:
+Check out the repository wherever you wish to install the program:
 
 	$ sudo git clone git://perot.me/macchiato /usr/share/macchiato
 
@@ -99,7 +99,7 @@ Manual mode allows you to run `macchiato` without having a config file. You must
 * `-o <class>` or `--oui-class <class>`: Specifies a class of OUI prefixes to use for this interface. For example, if you specify `--oui-class wired_console`, then the OUIs defined in `$scriptDir/oui/wired_console.sh` will be added to the list of OUIs to consider. You can specify this multiple times to add other possible OUI classes.
 * `-b <blaclistedOUI>` or `--blacklist <blaclistedOUI>`: Specifies single OUI that should never be used. You can specify this multiple times to blacklist multiple OUIs.
 * `-e <ending>` or `--ending <ending>`: Specifies the last 3 bytes to use for the generated MAC address (example: `dd:ee:ff`). If unspecified, these 3 bytes will be chosen randomly.
-* `-r` or `--random`: If specified, macchiato will use `/dev/random` instead of `/dev/urandom` as a source of randomness. On Linux systems, this may block for some time until enough entropy is available, but provides higher-quality randomness used when generating a MAC address.
+* `-r` or `--random`: If specified, macchiato will use `/dev/random` instead of `/dev/urandom` as a source of randomness. On Linux systems, this may block for some time until enough entropy is available, but provides higher-quality randomness used when generating a MAC address. This option requires having `xxd` installed.
 
 ## Contribute
 
