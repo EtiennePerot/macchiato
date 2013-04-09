@@ -77,6 +77,31 @@ deviceBringDown() {
 	return "$?"
 }
 
+deviceGetMAC() {
+	if programExists macchanger; then
+		macchanger "$1" | grep -iP '^(permanent|current)\s+MAC' | head -1 | sed -r 's/^.*MAC[^0-9a-f]*([0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]).*/\1/i'
+		return "$?"
+	elif programExists ip; then
+		ip link show "$1" | grep -E '([0-9A-Fa-f][0-9A-Fa-f]:){5}[0-9A-Fa-f][0-9A-Fa-f]' | sed -r 's#\s*brd.*$##;s#^\s*(link/)?ether\s*##i'
+		return "$?"
+	elif programExists ifconfig; then
+		ifconfig "$1" | grep -iP '^\s*ether' | head -1 | sed -r 's/^.*ether[^0-9a-f]*([0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]).*/\1/i'
+		return "$?"
+	fi
+	echo "Cannot get the MAC address of network device '$1'."
+	exit 1
+}
+
+deviceGetOUI() {
+	deviceGetMAC "$@" | cut -d ':' -f 1-3
+	return "$?"
+}
+
+deviceGetEnding() {
+	deviceGetMAC "$@" | cut -d ':' -f 4-6
+	return "$?"
+}
+
 deviceSetMAC() {
 	if programExists macchanger; then
 		macchanger -m "$2" "$1"

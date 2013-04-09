@@ -1,6 +1,6 @@
 Usage:
     macchiato --manual <interface>
-              -o <class1> [-o <class2> [...]]
+              [-o <class1> [-o <class2> [...]]]
               [-b <blackedoui1> [-b <blackedoui2> [...]]
               [-e <ending>]
               [-r]
@@ -15,8 +15,8 @@ Arguments:
         For example, if you specify --oui-class wired_console, then
         the OUIs defined in $scriptDir/oui/wired_console.sh will be added
         to the list of OUIs to consider.
-        You can specify this multiple times. You must specify it at least
-        once.
+        You can specify this multiple times. If not specified, the OUI prefix
+        of the interface will not be changed (but the ending will).
 
     -b|--blacklist <aa:bb:cc>
         Specifies single OUI that should never be used.

@@ -89,14 +89,14 @@ For each file inside confdir (or inside `$scriptDir/conf` if not provided), it w
 ##### Usage 3: Config-less usage
 
 	$ macchiato --manual <interface>
-	                     -o <class1> [-o <class2> [...]]
+	                     [-o <class1> [-o <class2> [...]]]
 	                     [-b <blacklisted1> [-b <blacklisted2> [...]]]
 	                     [-e <ending>]
 	                     [-r]
 
 Manual mode allows you to run `macchiato` without having a config file. You must specify `--manual` as the first argument in order to use this. The next argument (`<interface>`) should be the name of the network interface to apply the rules to. Then, you can use the following:
 
-* `-o <class>` or `--oui-class <class>`: Specifies a class of OUI prefixes to use for this interface. For example, if you specify `--oui-class wired_console`, then the OUIs defined in `$scriptDir/oui/wired_console.sh` will be added to the list of OUIs to consider. You can specify this multiple times to add other possible OUI classes.
+* `-o <class>` or `--oui-class <class>`: Specifies a class of OUI prefixes to use for this interface. For example, if you specify `--oui-class wired_console`, then the OUIs defined in `$scriptDir/oui/wired_console.sh` will be added to the list of OUIs to consider. You can specify this multiple times to add other possible OUI classes. If no class is specified, the interface's OUI prefix will be preserved (but the ending will be changed).
 * `-b <blaclistedOUI>` or `--blacklist <blaclistedOUI>`: Specifies single OUI that should never be used. You can specify this multiple times to blacklist multiple OUIs.
 * `-e <ending>` or `--ending <ending>`: Specifies the last 3 bytes to use for the generated MAC address (example: `dd:ee:ff`). If unspecified, these 3 bytes will be chosen randomly.
 * `-r` or `--random`: If specified, macchiato will use `/dev/random` instead of `/dev/urandom` as a source of randomness. On Linux systems, this may block for some time until enough entropy is available, but provides higher-quality randomness used when generating a MAC address. This option requires having `xxd` installed.
@@ -105,6 +105,7 @@ Manual mode allows you to run `macchiato` without having a config file. You must
 
 If you wish to expand the OUI list (and you are welcome to!), please send a pull request or [post a comment on this blog post][MAC spoofing: What, why, how, and something about coffee]. Your hardware should be "common enough", meaning that there should exist a decent number of this type of hardware actively in use. Make sure to specify:
 
+* Device class (Laptop wireless interface? Desktop PCI card? Mobile phone bluetooth adapter? Network printer ethernet interface? etc.)
 * OUI prefix, in lowercase `hh:hh:hh` format
 * Organization name corresponding to the OUI prefix, according to the [IEEE's public OUI listing]. Optional unless you are making a pull request.
 * Device information (if it's a mobile device, what model is it? If it's a motherboard's integrated network adapter, what's the model and revision number of the board? etc.)

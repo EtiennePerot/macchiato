@@ -98,11 +98,6 @@ if [ -n "$manualMode" ]; then
 		fi
 		shift
 	done
-	if [ "${#ouiList[@]}" -eq 0 ]; then
-		echo 'Must specify at least one OUI class.'
-		echo "Use '--manual-help' for usage information."
-		exit 1
-	fi
 	finalActions+=("$manualDevice")
 	eval "finalActions_$(devHash "$manualDevice")_ouiList=(\"\${ouiList[@]}\")"
 	eval "finalActions_$(devHash "$manualDevice")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
@@ -163,7 +158,7 @@ else
 		if [ "$dontTouch" == 'true' ]; then
 			echo "[$device] Skipping interface (dontTouch = true)."
 			continue
-		elif [ -z "$ouiList" ]; then
+		elif ! declare -p ouiList &> /dev/null; then
 			echo "[$device] 'ouiList' not specified in config file: '${deviceMap[$device]}'."
 			exit 1
 		elif [ -n "$ending" ]; then
@@ -215,9 +210,14 @@ for device in "${finalActions[@]}"; do
 	}
 
 	if declare -p ouiList | grep -q '^declare -a'; then
-		for subList in "${ouiList[@]}"; do
-			addOuiList "$subList"
-		done
+		if [ "${#ouiList[@]}" -eq 0 ]; then
+			echo "[$device] OUI list is empty; will keep current OUI prefix: '$(deviceGetOUI "$device")'"
+			finalOuiList+=("$(deviceGetOUI "$device")")
+		else
+			for subList in "${ouiList[@]}"; do
+				addOuiList "$subList"
+			done
+		fi
 	else
 		addOuiList "$ouiList"
 	fi
