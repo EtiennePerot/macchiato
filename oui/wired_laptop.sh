@@ -15,4 +15,5 @@ oui_wired_laptop=(
 	c8:60:00='ASUSTek COMPUTER INC.|Asus K53E Notebook, Atheros Communications Inc. AR8151 v2.0 Gigabit Ethernet (rev c0)'
 	e0:db:55='Dell Inc.|Dell Vostro 2520 BTX'
 	e8:9a:8f='Quanta Computer Inc.|Acer Aspire One D257'
+	00:19:b9='Dell Inc.|Dell Latitude D820'
 )
