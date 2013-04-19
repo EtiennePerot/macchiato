@@ -2,6 +2,7 @@
 oui_wireless_laptop=(
 	00:08:ca='TwinHan Technology Co.,Ltd|Asus K45VM Notebook, Atheros AR9485WB-EG Wireless Network Adapter'
 	00:13:02='Intel Corporate|Fujitsu Amilo Pi 1556 Notebook, Intel Corporation PRO/Wireless 3945ABG Network Adapter'
+	00:19:7e='Hon Hai Precision Ind. Co., Ltd|Dell Latitude D820'
 	00:1b:77='Intel Corporate|Dell Inspiron 6400'
 	00:21:00='GemTek Technology Co., Ltd.|HP Pavilion TX2510EA'
 	00:21:5C='Intel Corporate|Lenovo ThinkPad R61 Notebook, Intel Wireless WiFi Link 4965AGN'

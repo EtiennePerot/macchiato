@@ -3,6 +3,7 @@ oui_wired_laptop=(
 	00:03:0d='Uniwill Computer Corp.|Fujitsu Amilo Pi 1556 Notebook, Realtek Semiconductor Co., Ltd. RTL-8169 Gigabit Ethernet'
 	00:10:a4='Xircom|IBM Thinkpad T21'
 	00:19:b9='Dell Inc.|Dell Inspiron 6400'
+	00:19:b9='Dell Inc.|Dell Latitude D820'
 	00:21:86='Universal Global Scientific Industrial Co., Ltd|Lenovo ThinkPad R61 Notebook, Intel 82566MC Ethernet'
 	00:24:54='Samsung Electronics Co., LTD|Samsung N510 Ion Netbook, Marvell 88E8040 Ethernet'
 	00:26:b0='Apple, Inc.|MacBook Pro 5.1'
