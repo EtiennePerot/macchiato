@@ -3,6 +3,24 @@ programExists() {
 	return "$?"
 }
 
+hasIfconfig() {
+	if [ -n "$MACCHIATO_IFCONFIG_COMMAND" ]; then
+		return 0
+	fi
+	programExists ifconfig
+	return "$?"
+}
+
+doIfconfig() {
+	local ifconfigCommand
+	ifconfigCommand=('ifconfig')
+	if [ -n "$MACCHIATO_IFCONFIG_COMMAND" ]; then
+		ifconfigCommand=($MACCHIATO_IFCONFIG_COMMAND) # No quotes
+	fi
+	"${ifconfigCommand[@]}" "$@"
+	return "$?"
+}
+
 getRandom() {
 	if programExists xxd; then
 		if [ -n "$useRandom" ]; then
@@ -33,8 +51,8 @@ deviceExists() {
 	if programExists ip; then
 		ip link show "$1" &> /dev/null
 		return "$?"
-	elif programExists ifconfig; then
-		ifconfig -a "$1" &> /dev/null
+	elif hasIfconfig; then
+		doIfconfig -a "$1" &> /dev/null
 		return "$?"
 	fi
 	echo "Cannot determine whether network device '$1' exists or not; exitting."
@@ -47,8 +65,8 @@ deviceIsUp() {
 			return 0
 		fi
 		return 1
-	elif programExists ifconfig; then
-		ifconfig | grep "^$1:" &> /dev/null
+	elif hasIfconfig; then
+		doIfconfig | grep "^$1:" &> /dev/null
 		return "$?"
 	fi
 	echo "Cannot determine whether network device '$1' is up or not; exitting."
@@ -59,8 +77,8 @@ deviceBring() {
 	if programExists ip; then
 		ip link set "$1" "$2"
 		return "$?"
-	elif programExists ifconfig; then
-		ifconfig "$1" "$2"
+	elif hasIfconfig; then
+		doIfconfig "$1" "$2"
 		return "$?"
 	fi
 	echo "Cannot bring network device '$1' $2."
@@ -84,8 +102,8 @@ deviceGetMAC() {
 	elif programExists ip; then
 		ip link show "$1" | grep -E '([0-9A-Fa-f][0-9A-Fa-f]:){5}[0-9A-Fa-f][0-9A-Fa-f]' | sed -r 's#\s*brd.*$##;s#^\s*(link/)?ether\s*##i'
 		return "$?"
-	elif programExists ifconfig; then
-		ifconfig "$1" | grep -iP '^\s*ether' | head -1 | sed -r 's/^.*ether[^0-9a-f]*([0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]).*/\1/i'
+	elif hasIfconfig; then
+		doIfconfig "$1" | grep -iP '^\s*ether' | head -1 | sed -r 's/^.*ether[^0-9a-f]*([0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]:[0-9a-f][0-9a-f]).*/\1/i'
 		return "$?"
 	fi
 	echo "Cannot get the MAC address of network device '$1'."
@@ -109,8 +127,8 @@ deviceSetMAC() {
 	elif programExists ip; then
 		ip link set "$1" address "$2"
 		return "$?"
-	elif programExists ifconfig; then
-		ifconfig "$1" hw ether "$2"
+	elif hasIfconfig; then
+		doIfconfig "$1" hw ether "$2"
 		return "$?"
 	fi
 	echo "Cannot change the MAC address of network device '$1' to '$2'."
@@ -119,10 +137,10 @@ deviceSetMAC() {
 
 getDevicesList() {
 	if programExists ip; then
-		ip -o link | sed -r 's/[0-9]+\s*:\s*(\S+):.*/\1/' | sort
+		ip -o link | sed -r 's/[0-9]+[ \t]*:[ \t]*([^ \t]+):.*/\1/' | sort
 		return "$?"
-	elif programExists ifconfig; then
-		ifconfig -a -s | grep -v '^Iface' | cut -d ' ' -f 1 | sort
+	elif hasIfconfig; then
+		doIfconfig -a | grep -i '^[^ \t]' | sed -r 's/[: \t].*$//' | sort
 		return "$?"
 	fi
 	echo "Cannot enumerate device list."

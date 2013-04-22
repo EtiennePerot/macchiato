@@ -101,6 +101,12 @@ Manual mode allows you to run `macchiato` without having a config file. You must
 * `-e <ending>` or `--ending <ending>`: Specifies the last 3 bytes to use for the generated MAC address (example: `dd:ee:ff`). If unspecified, these 3 bytes will be chosen randomly.
 * `-r` or `--random`: If specified, macchiato will use `/dev/random` instead of `/dev/urandom` as a source of randomness. On Linux systems, this may block for some time until enough entropy is available, but provides higher-quality randomness used when generating a MAC address. This option requires having `xxd` installed.
 
+### Environment variables
+
+The following environment variables are reconized:
+
+* `MACCHIATO_IFCONFIG_COMMAND`: If set, `macchiato` will assume that `ifconfig` is installed and can be run by running this command. This allows `macchiato` to be used on Android devices, where `ifconfig` may be provided by busybox and one needs to run `busybox ifconfig <arguments>`.
+
 ## Contribute
 
 If you wish to expand the OUI list (and you are welcome to!), please send a pull request or [post a comment on this blog post][MAC spoofing: What, why, how, and something about coffee]. Your hardware should be "common enough", meaning that there should exist a decent number of this type of hardware actively in use. Make sure to specify:
