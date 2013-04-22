@@ -34,6 +34,13 @@ ending=''
 # randomness used when generating a MAC address.
 useRandom=''
 
+# dontBringDown should be set to true if you don't want macchiato to turn off
+# the interface before changing its MAC address, and turning it back on again
+# afterwards.
+# If you do want macchiato to turn off and on the interface, then leave this
+# field empty.
+dontBringDown=''
+
 # dontTouch should be set to true if you don't want macchiato to touch this
 # interface at all. This is useful in case your _default.sh file requests
 # the MAC address to be changed, but that there are certain interfaces for

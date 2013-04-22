@@ -31,3 +31,9 @@ Arguments:
         as a source of randomness. On Linux systems, this may block for some
         time until enough entropy is available, but provides higher-quality
         randomness used when generating a MAC address.
+
+    -d|--no-down
+        If specified, macchiato will not bring the interface down before
+        changing its MAC address, and will not bring it back up again
+        afterwards; it will just leave the interface in the state it already
+        is.

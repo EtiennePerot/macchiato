@@ -91,8 +91,7 @@ For each file inside confdir (or inside `$scriptDir/conf` if not provided), it w
 	$ macchiato --manual <interface>
 	                     [-o <class1> [-o <class2> [...]]]
 	                     [-b <blacklisted1> [-b <blacklisted2> [...]]]
-	                     [-e <ending>]
-	                     [-r]
+	                     [-e <ending>] [-r] [-d]
 
 Manual mode allows you to run `macchiato` without having a config file. You must specify `--manual` as the first argument in order to use this. The next argument (`<interface>`) should be the name of the network interface to apply the rules to. Then, you can use the following:
 
@@ -100,6 +99,7 @@ Manual mode allows you to run `macchiato` without having a config file. You must
 * `-b <blaclistedOUI>` or `--blacklist <blaclistedOUI>`: Specifies single OUI that should never be used. You can specify this multiple times to blacklist multiple OUIs.
 * `-e <ending>` or `--ending <ending>`: Specifies the last 3 bytes to use for the generated MAC address (example: `dd:ee:ff`). If unspecified, these 3 bytes will be chosen randomly.
 * `-r` or `--random`: If specified, macchiato will use `/dev/random` instead of `/dev/urandom` as a source of randomness. On Linux systems, this may block for some time until enough entropy is available, but provides higher-quality randomness used when generating a MAC address. This option requires having `xxd` installed.
+* `-d` or `--no-down`: If specified, macchiato will not bring the interface down before changing its MAC address, and will not bring it back up again afterwards; it will just leave the interface in the state it already is.
 
 ### Environment variables
 

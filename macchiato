@@ -34,6 +34,7 @@ done
 # - finalActions_devHash($interface)_ouiBlacklist: Array of OUIs to not use
 # - finalActions_devHash($interface)_ending: Empty string or 3 bytes to use as ending
 # - finalActions_devHash($interface)_useRandom: Empty string to use /dev/urandom, non-empty string to use /dev/random
+# - finalActions_devHash($interface)_dontBringDown: Empty string if it should automatically be brought down, non-empty string to not bother
 # This construction is there to work around the fact that Bash doesn't have multi-dimensional associative arrays.
 # The devHash() is there because interface names may contain dashes and other weird characters.
 # devHash is a function defined in functions.sh.
@@ -95,6 +96,8 @@ if [ -n "$manualMode" ]; then
 				exit 1
 			fi
 			useRandom='true'
+		elif [ "$1" == '-d' -o "$1" == '--no-down' ]; then
+			dontBringDown='true'
 		fi
 		shift
 	done
@@ -103,6 +106,7 @@ if [ -n "$manualMode" ]; then
 	eval "finalActions_$(devHash "$manualDevice")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
 	eval "finalActions_$(devHash "$manualDevice")_ending=\"\$ending\""
 	eval "finalActions_$(devHash "$manualDevice")_useRandom=\"\$useRandom\""
+	eval "finalActions_$(devHash "$manualDevice")_dontBringDown=\"\$dontBringDown\""
 else
 	if [ ! -d "$confDir" ]; then
 		echo "Configuration directory '$confDir' does not exist."
@@ -154,6 +158,7 @@ else
 		ouiBlacklist=()
 		ending=''
 		useRandom=''
+		dontBringDown=''
 		source "${deviceMap[$device]}"
 		if [ "$dontTouch" == 'true' ]; then
 			echo "[$device] Skipping interface (dontTouch = true)."
@@ -179,6 +184,7 @@ else
 		eval "finalActions_$(devHash "$device")_ouiBlacklist=(\"\${ouiBlacklist[@]}\")"
 		eval "finalActions_$(devHash "$device")_ending=\"\$ending\""
 		eval "finalActions_$(devHash "$device")_useRandom=\"\$useRandom\""
+		eval "finalActions_$(devHash "$device")_dontBringDown=\"\$dontBringDown\""
 	done
 fi
 
@@ -187,6 +193,7 @@ for device in "${finalActions[@]}"; do
 	eval "ouiBlacklist=(\"\${finalActions_$(devHash "$device")_ouiBlacklist[@]}\")"
 	eval "ending=\"\$finalActions_$(devHash "$device")_ending\""
 	eval "useRandom=\"\$finalActions_$(devHash "$device")_useRandom\""
+	eval "dontBringDown=\"\$finalActions_$(devHash "$device")_dontBringDown\""
 
 	# Turn OUI blacklist to lowercase and to use :'s instead of -'s
 	# in order to normalize them so that later on we can compare them directly
@@ -249,11 +256,13 @@ for device in "${finalActions[@]}"; do
 		finalMACAddress="$(ouiGetBits "$finalOui"):$ending"
 	fi
 	deviceWasUp=''
-	if deviceIsUp "$device"; then
-		deviceWasUp='true'
-		echo "[$device] Bringing device down"
-		if ! deviceBringDown "$device"; then
-			echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
+	if [ -z "$dontBringDown" ]; then
+		if deviceIsUp "$device"; then
+			deviceWasUp='true'
+			echo "[$device] Bringing device down"
+			if ! deviceBringDown "$device"; then
+				echo "[$device] Failed to bring device down! Assigning a new MAC address is likely to fail as well."
+			fi
 		fi
 	fi
 	echo "[$device] Assigning spoofed MAC address: '$finalMACAddress' ($(ouiGetOrganization "$finalOui") - $(ouiGetDeviceName "$finalOui"))"
@@ -263,7 +272,7 @@ for device in "${finalActions[@]}"; do
 			echo 'It looks like you are not running this script as root. You may want to change that.'
 		fi
 	fi
-	if [ -n "$deviceWasUp" ]; then
+	if [ -z "$dontBringDown" -a -n "$deviceWasUp" ]; then
 		echo "[$device] Bringing device back up"
 		if ! deviceBringUp "$device"; then
 			echo "[$device] Failed to bring device back up! Network connectivity will not work until it is back up."
