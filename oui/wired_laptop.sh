@@ -1,6 +1,7 @@
 # Wired network interfaces in laptop computers
 oui_wired_laptop=(
 	00:03:0d='Uniwill Computer Corp.|Fujitsu Amilo Pi 1556 Notebook, Realtek Semiconductor Co., Ltd. RTL-8169 Gigabit Ethernet'
+	00:0F:20='Hewlett-Packard Company|HP Pavilion ZE5400, National Semiconductor Corporation DP83815 (MacPhyter) Ethernet Controller'
 	00:10:a4='Xircom|IBM Thinkpad T21'
 	00:19:b9='Dell Inc.|Dell Inspiron 6400'
 	00:19:b9='Dell Inc.|Dell Latitude D820'
