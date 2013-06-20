@@ -105,6 +105,7 @@ Manual mode allows you to run `macchiato` without having a config file. You must
 
 The following environment variables are reconized:
 
+* `MACCHIATO_DEBUG`: If set, turns on Bash debugging.
 * `MACCHIATO_IFCONFIG_COMMAND`: If set, `macchiato` will assume that `ifconfig` is installed and can be run by running this command. This allows `macchiato` to be used on Android devices, where `ifconfig` may be provided by busybox and one needs to run `busybox ifconfig <arguments>`.
 
 ## Contribute
