@@ -11,6 +11,7 @@ oui_wireless_laptop=(
 	0c:60:76='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Samsung N510 Notebook, Realtek RTL8192E Wireless Network Adapter'
 	14:10:9f='Apple Inc|Apple MacBook Pro 10,1 (15.4" Retina, 2012)'
 	20:7c:8f='Quanta Microsystems,Inc.|Toshiba Satellite L655D'
+	24:77:03='Intel Corporate|Lenovo ThinkPad T430s, Intel Corporation Centrino Ultimate-N 6300'
 	58:94:6b='Intel Corporate|Fujitsu Lifebook E780'
 	60:d8:19='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Lenovo ThinkPad X121e, Realtek RTL8188CE Wireless Network Adapter'
 	64:27:37='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Dell Vostro 2520 BTX'
