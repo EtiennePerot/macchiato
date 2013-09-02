@@ -1,4 +1,5 @@
 programExists() {
+	export PATH
 	which "$1" &> /dev/null
 	return "$?"
 }

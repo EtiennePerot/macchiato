@@ -94,7 +94,7 @@ echo '# As such, any changes you make here will be overwritten during the next r
 echo '' >> "$output_rule" # Empty line
 for device in "${!macAddresses[@]}"; do
 	echo "# macchiato-data: $device = ${macAddresses[$device]}" >> "$output_rule"
-	echo "ACTION==\"add\", ATTR{address}==\"${macAddresses[$device]}\", RUN+=\"$bash_bin '$macchiato_bin' '$confDir' '$device'\"" >> "$output_rule"
+	echo "ACTION==\"add\", SUBSYSTEM==\"net\", ATTR{address}==\"${macAddresses[$device]}\", RUN+=\"$bash_bin '$macchiato_bin' '$confDir' '$device'\"" >> "$output_rule"
 	echo '' >> "$output_rule" # Empty line
 done
 echo "All done. udev rules have been written to '$output_rule'"
