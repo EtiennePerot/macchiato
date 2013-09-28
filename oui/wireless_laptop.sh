@@ -15,6 +15,7 @@ oui_wireless_laptop=(
 	58:94:6b='Intel Corporate|Fujitsu Lifebook E780'
 	60:d8:19='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Lenovo ThinkPad X121e, Realtek RTL8188CE Wireless Network Adapter'
 	64:27:37='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Dell Vostro 2520 BTX'
+	6c:71:d9='AzureWave Technologies Inc.|ASUS VivoBook X202E,Qualcomm Atheros AR9485 Wireless Network Adapter'
 	70:f3:95='Universal Global Scientific Industrial Co., Ltd.|HP 425 Notebook'
 	78:e4:00='Hon Hai Precision Ind. Co.,Ltd.|Acer Aspire One D260'
 	84:4b:f5='Hon Hai Precision Ind. Co.,Ltd. / Foxconn|Sony VAIO SVT1311W1E/S'
