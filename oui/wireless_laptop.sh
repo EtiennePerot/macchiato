@@ -22,4 +22,5 @@ oui_wireless_laptop=(
 	94:db:c9='Azurewave|Asus K53E Notebook, Atheros Communications Inc. AR9485 Wireless Network Adapter (rev 01)'
 	b8:8d:12='Apple, Inc.|MacBook Pro 8.1 (13", 2011)'
 	cc:af:78='Hon Hai Precision Ind. Co.,Ltd.|Acer Aspire One D257'
+	e8:2a:ea='Intel Corporate|Toshiba Z30-A'
 )
