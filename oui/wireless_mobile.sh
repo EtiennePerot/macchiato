@@ -16,5 +16,6 @@ oui_wireless_mobile=(
 	d8:d1:cb='Apple|Apple iPhone 5'
 	e8:06:88='Apple, Inc.|Apple iPhone 3GS old bootrom'
 	e8:92:a4='LG Electronics|Google Nexus 4'
+	f0:25:b7='Samsung Electro Mechanics|Samsung Galaxy S4'
 	f8:1e:df='Apple, Inc.|Apple iPhone 3GS new bootrom'
 )
