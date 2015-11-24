@@ -11,6 +11,7 @@ oui_wired_laptop=(
 	00:90:f5='CLEVO CO.|Clevo W110ER gaming laptop, Realtek RTL8111 Ethernet'
 	04:7d:7b='Quanta Computer Inc.|Lenovo ThinkPad X121e, Atheros AR8151 Ethernet'
 	10:bf:48='ASUSTEK COMPUTER INC.|Asus K45VM Notebook, Realtek PCIe GBE Family Controller'
+	28:d2:44='LCFC(HeFei) Electronics Technology Co., Ltd.|Lenovo ThinkPad T440s, Intel Corporation Ethernet Connection I218-LM'
 	30:f9:ed='Sony Corporation|Sony VAIO SVT1311W1E/S'
 	3c:07:54='Apple, Inc.|MacBook Pro 8.1 (13", 2011)'
 	50:46:5d='ASUSTek Computer Inc.|ASUS Vivobook X202E, Qualcomm Atheros AR8162/8166/8168 PCI-E Fast Ethernet Controller (NDIS 6.30)'
