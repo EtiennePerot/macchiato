@@ -15,6 +15,7 @@ oui_wired_laptop=(
 	30:f9:ed='Sony Corporation|Sony VAIO SVT1311W1E/S'
 	3c:07:54='Apple, Inc.|MacBook Pro 8.1 (13", 2011)'
 	50:46:5d='ASUSTek Computer Inc.|ASUS Vivobook X202E, Qualcomm Atheros AR8162/8166/8168 PCI-E Fast Ethernet Controller (NDIS 6.30)'
+	60:eb:69='Quanta Computer Inc.|Toshiba Satellite L655D'
 	8c:73:6e='Fujitsu Limited|Fujitsu Lifebook E780'
 	b8:6b:23='Toshiba|Toshiba Z30-A'
 	c8:60:00='ASUSTek COMPUTER INC.|Asus K53E Notebook, Atheros Communications Inc. AR8151 v2.0 Gigabit Ethernet (rev c0)'
