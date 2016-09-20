@@ -8,5 +8,5 @@ oui_wireless_pmp=(
 	88:c6:63='Apple, Inc.|iPod Touch 4th gen'
 	e8:06:88='Apple, Inc.|iPad 1'
 	f0:a2:25='PRIVATE (likely Amazon.com, Inc.)|Amazon Kindle 4'
-	f0:27:2D='Amazon.com, Inc.|Echo Dot'
+	f0:27:2d='Amazon Technologies Inc.|Echo Dot'
 )
