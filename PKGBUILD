@@ -1,7 +1,7 @@
 # Maintainer: Etienne Perot <etienne@perot.me>
 pkgname=macchiato-git
-pkgver=20130221
-pkgrel=3
+pkgver=20170604
+pkgrel=1
 pkgdesc='MAC spoofing with a restricted range of OUI prefixes'
 arch=('any')
 url='https://github.com/EtiennePerot/macchiato'

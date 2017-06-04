@@ -4,8 +4,8 @@ if [ -n "$MACCHIATO_DEBUG" ]; then
 	set -x
 fi
 
-scriptFile="$(readlink -f "$BASH_SOURCE")"
-scriptDir="$(dirname "$scriptFile")"
+scriptFile="$(readlink -f "${BASH_SOURCE[0]}")"
+scriptDir="$(cd "$(dirname "$scriptFile")" && pwd)"
 
 source "$scriptDir/functions.sh" || exit 1
 
